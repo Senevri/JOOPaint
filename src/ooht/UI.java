@@ -56,14 +56,7 @@ public class UI {
 		
 	}
 	
-	public void command(Cmd command){
-		/*switch (command){
-		case PEN:
-			colpick.displayCurrentColor();
-			break;
-		default:
-			break;				
-		}*/
+	public void command(Cmd command){		
 		main.command(command);
 	}
 	
