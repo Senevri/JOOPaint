@@ -80,5 +80,10 @@ public class UI {
 	public ooht.model.Image getImg() {
 		return img;
 	}
+	
+	public ToolOptionsPanel getToolOptionsPanel() {
+		return this.top;
+		
+	}
 			
 }

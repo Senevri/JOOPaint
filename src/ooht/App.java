@@ -17,3 +17,10 @@ public class App {
 		UI userinterface = new UI();		
 	}		
 }
+
+/**
+ * TODO features: 
+ * 1. Undo
+ * 
+ * 
+*/

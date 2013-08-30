@@ -49,21 +49,12 @@ public class MainView extends View {
 		
 		Dimension d = m_ui.tk.getScreenSize();
 		this.iview = new ImageView(this.m_ui);
-		//BoxLayout box = new BoxLayout(iview, BoxLayout.PAGE_AXIS);		
-		//this.iview.setLayout(box);
-		this.getContentPane().setLayout(new BorderLayout());
-				
-		//frame.add(Box.createHorizontalGlue());
-		//frame.add(Box.createVerticalGlue());
+		this.getContentPane().setLayout(new BorderLayout());			
 		
 		JScrollPane scroll = new JScrollPane(centeredPanel(iview));
 		scroll.setAlignmentX(CENTER_ALIGNMENT);
 		Dimension isize = m_ui.getImg().dimensions();
 		
-//		this.getContentPane().add(new JPanel(), BorderLayout.WEST);
-//		this.getContentPane().add(new JPanel(), BorderLayout.EAST);
-//		this.getContentPane().add(new JPanel(), BorderLayout.SOUTH);
-//		this.getContentPane().add(new JPanel(), BorderLayout.NORTH);
 		this.getContentPane().add(scroll);
 		//FIXME magic numbers account for borders + scrollbars
 		this.setBounds((
@@ -105,8 +96,7 @@ public class MainView extends View {
 		frame.add(Box.createVerticalGlue());
 		frame.add(content);
 		frame_outer.add(frame);
-				
-		
+						
 		addBindings(frame_outer);
 		return frame_outer;				
 	}

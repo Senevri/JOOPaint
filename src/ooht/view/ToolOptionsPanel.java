@@ -2,6 +2,9 @@ package ooht.view;
 
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -20,12 +23,14 @@ public class ToolOptionsPanel extends View {
 	private Tool m_tool;
 	private UI m_ui;
 	private JPanel m_container;
+	private HashMap<String, JLabel> m_datalabels;
 	public ToolOptionsPanel(UI ui) {
 		super(ui);
 		// TODO Auto-generated constructor stub
 		m_ui = ui;
 		m_tool = ui.getCurrentTool();
 		m_container = new JPanel();
+		m_datalabels = new HashMap<String, JLabel>();
 		m_container.setLayout(new BoxLayout(m_container, BoxLayout.PAGE_AXIS));
 		this.setTitle("Options");
 		update();
@@ -39,12 +44,20 @@ public class ToolOptionsPanel extends View {
 		super.repaint();
 	}
 	
+	public JLabel getDataLabel(String name) {
+		return (JLabel)m_datalabels.get(name);
+		
+	}
+	
 	public void update() {		
 		m_tool = m_ui.getCurrentTool();
 		m_container.removeAll();
+		m_datalabels.clear();
 		switch (m_tool.type) {
 		case PEN: 
+			m_datalabels.put("size", new JLabel("1"));
 			m_container.add(new JLabel("size"));
+			m_container.add(m_datalabels.get("size"));
 			m_container.add(new topScrollBar(1));
 			break;
 		case FILL:
@@ -56,6 +69,10 @@ public class ToolOptionsPanel extends View {
 		this.repaint();
 	}
 	private class topScrollBar extends JScrollBar{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private int id;
 		
 		topScrollBar(int id){
@@ -81,6 +98,13 @@ public class ToolOptionsPanel extends View {
 			m_tool = m_ui.getCurrentTool();
 			m_tool.updateOptions(cur.id, val);
 			m_ui.setCurrentTool(m_tool);
+			switch(m_tool.type) {
+			case PEN:				
+				m_ui.getToolOptionsPanel().getDataLabel("size").setText(String.valueOf(val/10));
+			break;
+			default: 
+				break;
+			}
 		}
 	}
 }
