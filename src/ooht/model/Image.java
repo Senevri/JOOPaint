@@ -9,6 +9,11 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
 
 import javax.imageio.ImageIO;
 
@@ -17,34 +22,69 @@ import javax.imageio.ImageIO;
  * @author Esa
  *
  */
-public class Image extends Model {
-
+public class Image extends Model {	
 	private BufferedImage img = null;
 	private int height = 240;
 	private int width = 320;
 	
+	private String activeLayer = "Background";
+	private Map<String, ImageLayer> layers = null;
+	
+	private Deque<ImageLayer> undostack = null;
+	
 	private String filename = null;
 	/**
 	 * 
-	 */
+	 */	
 	public Image(String filename) {
 		// TODO Auto-generated constructor stub
+		Initialize();
 		this.filename = filename;
 		this.width = 320;
 		this.height = 240;				
 	}
 	
 	public Image(int width, int height) {
+		Initialize();
 		this.filename = System.getProperty("user.dir");
 		this.width = width;
 		this.height = height;
 	}
 
 	public Image(BufferedImage apply) {
-		this.img=apply;
+		Initialize();		
+		this.setImg(apply);
 		this.width = this.img.getWidth();
 		this.height = this.img.getHeight();
 	}
+	
+	public void Initialize() {
+		layers = new HashMap<String, ImageLayer>();
+		undostack = new ArrayDeque<ImageLayer>(100);
+	}
+	
+	public void PushUndo(BufferedImage src){
+		ImageLayer il = new ImageLayer(src);
+		il.Name = this.activeLayer;
+		undostack.push(il);		
+		if (undostack.size() > 100) {
+			undostack.removeLast();			
+		} 
+	}
+	
+	public BufferedImage Undo() {
+		ImageLayer il = undostack.pop();
+		this.layers.put(il.Name, il);
+		this.img = il;
+		return this.img;		
+	}
+	
+	private void setImg(BufferedImage src){
+		this.img=src;		
+		layers.put("Background", new ImageLayer(this.img));		
+	}
+	
+	
 
 	public BufferedImage data(){
 		return this.img;
@@ -58,7 +98,8 @@ public class Image extends Model {
 		if(null != this.img){
 			return false;
 		}
-		this.img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB); 
+		this.setImg(new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB));
+		
 		Graphics2D g = ((Graphics2D)img.getGraphics());
 		g.setBackground(Color.WHITE);		
 		g.setColor(Color.WHITE);
@@ -89,7 +130,7 @@ public class Image extends Model {
 	 */	
 	public boolean load() {
 		try {
-		    this.img = ImageIO.read(new File(this.filename));		    
+		    this.setImg(ImageIO.read(new File(this.filename)));		    
 		} catch (IOException e) {
 			return false;			
 		}

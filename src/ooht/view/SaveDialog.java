@@ -68,8 +68,15 @@ public class SaveDialog extends View {
 						JDialog jd = new JDialog(new JFrame(), "Error" + ioe.getMessage());
 						return;
 					}											
+				} else {					
+					view.setVisible(false);
+					return;
 				}						
 			}
+			if (!filepath.endsWith(".png") && null != filepath) {
+				filepath += ".png";							
+			}
+			// FIXME problem if filepath remains null? 			
 			m_ui.getImg().setName(filepath);
 			m_ui.command(UI.Cmd.SAVE);
 			view.setVisible(false);			

@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -21,6 +22,7 @@ public class Toolbar extends View {
 	public Toolbar(UI ui) {		
 		super(ui);
 		this.setTitle("Toolbar");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		tc = new ToolCommand();
 		Container pane = this.getContentPane();		
 		JPanel container = new JPanel();

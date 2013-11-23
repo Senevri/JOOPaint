@@ -28,6 +28,7 @@ public class ImageView extends JPanel{
 	BufferedImage imgbuf = null;
 	private UI m_ui=null;
 	//private JPanel internal_img;
+	public Image m_image = null;
 	
 	private double zoomlevel=2;
 	public ImageView(UI ui){
@@ -46,6 +47,7 @@ public class ImageView extends JPanel{
 		ooht.tool.Fill fill = new ooht.tool.Fill();
 		fill.setColor(Color.BLACK);
 		this.imgbuf = fill.apply(this.imgbuf);
+		m_image = out;
 	}
 	
 	public void update(){
@@ -107,6 +109,11 @@ public class ImageView extends JPanel{
 
 		@Override
 		public void mousePressed(MouseEvent event) {
+			/* Create backup of manipulated layer
+			 * Store the IMGBuf in... image's undo stack? 
+			 * */
+			m_image.PushUndo(imgbuf);		
+			
 			int button = event.getButton();
 			apply = true;
 			lastPoint = event.getPoint();
@@ -131,7 +138,8 @@ public class ImageView extends JPanel{
 		}
 
 		@Override
-		public void mouseReleased(MouseEvent arg0) {
+		public void mouseReleased(MouseEvent arg0) {			
+			
 			// TODO Auto-generated method stub
 			
 		}

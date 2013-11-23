@@ -115,12 +115,15 @@ public class MainView extends View {
 			input.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), Cmd.PEN);
 			input.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, 0), Cmd.FILL);
 			
+			input.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), Cmd.UNDO);
+			
 			actions.put(Cmd.ZOOM_IN, new KeyAction(Cmd.ZOOM_IN));		
 			actions.put(Cmd.ZOOM_OUT, new KeyAction(Cmd.ZOOM_OUT));
 			actions.put(Cmd.LOAD, new KeyAction(Cmd.LOAD));
 			actions.put(Cmd.SAVE, new KeyAction(Cmd.SAVE));
 			actions.put(Cmd.PEN, new KeyAction(Cmd.PEN));
 			actions.put(Cmd.FILL, new KeyAction(Cmd.FILL));
+			actions.put(Cmd.UNDO, new KeyAction(Cmd.UNDO));
 		
 	}
 	class KeyAction extends AbstractAction {
@@ -182,6 +185,8 @@ public class MainView extends View {
 		case NEW:
 			newImage();
 			break;
+		case UNDO:
+			iview.imgbuf = m_ui.getImg().Undo();
 		default:
 			break;
 		}

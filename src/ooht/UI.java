@@ -11,7 +11,7 @@ import ooht.view.*;
 
 public class UI {
 	
-	public enum Cmd { ZOOM_IN, ZOOM_OUT, PEN, FILL, SAVE, LOAD, NEW}
+	public enum Cmd { ZOOM_IN, ZOOM_OUT, PEN, FILL, SAVE, LOAD, NEW, UNDO}
 	public Toolkit tk = null;
 	private Tool currentTool = null;
 	private Toolbar tools = null;
