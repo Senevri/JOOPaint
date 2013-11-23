@@ -5,10 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ooht.UI;
 
@@ -19,40 +23,17 @@ public class LoadDialog extends View implements ActionListener{
 	public LoadDialog(UI ui){
 		super(ui);		
 		this.setName("Load File");
-		//filepath = new JTextField(System.getProperty("user.dir"));
-		//filepath.setSize(300, this.getMinimumSize().height);
-		//filepath.addKeyListener(new LoadCommand(this))
 		filechooser = new JFileChooser();
+		filechooser.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "gif", "png"));
 		int returnVal = filechooser.showOpenDialog(null); 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-		 //Open File
-		} 
-		//filechooser.addKeyListener(new LoadCommand(this));
-		JPanel container = new JPanel(new FlowLayout());
-		//container.add(filechooser);
-		//container.add(filepath);
-		//container.add(tButton("Load", "load", new LoadCommand(this)));
-		this.getContentPane().add(filechooser);
-		this.pack();
-		this.setVisible(true);
-
+			LoadCommand lc = new LoadCommand(this);
+			lc.load();
+		} 		
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		filechooser = new JFileChooser();
-		int returnVal = filechooser.showOpenDialog(null); 
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-		 //Open File
-		} 
-		//filechooser.addKeyListener(new LoadCommand(this));
-		JPanel container = new JPanel(new FlowLayout());
-		//container.add(filechooser);
-		//container.add(filepath);
-		//container.add(tButton("Load", "load", new LoadCommand(this)));
-		this.getContentPane().add(filechooser);
-		this.pack();
-		this.setVisible(true);
-		
+		System.out.println(e.toString());
 	}
 
 	private class LoadCommand implements ActionListener, KeyListener{
@@ -63,10 +44,13 @@ public class LoadDialog extends View implements ActionListener{
 		}
 		private void load(){
 			//filepath.setText(filechooser.getSelectedFile.GetName();)
-
-			m_ui.setImg(new ooht.model.Image(filechooser.getSelectedFile().getName()));
+			try {
+			m_ui.setImg(new ooht.model.Image(filechooser.getSelectedFile().getCanonicalPath()));
 			m_ui.command(UI.Cmd.LOAD);
-			view.setVisible(false);			
+			view.setVisible(false);
+			} catch (IOException ioe) {
+				JDialog jd = new JDialog(new JFrame(), ioe.getMessage());				
+			}
 		}
 		
 		@Override

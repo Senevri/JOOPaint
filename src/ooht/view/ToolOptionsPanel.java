@@ -27,6 +27,7 @@ public class ToolOptionsPanel extends View {
 	public ToolOptionsPanel(UI ui) {
 		super(ui);
 		// TODO Auto-generated constructor stub
+		//this.setBounds(0, 100, 200, -1);
 		m_ui = ui;
 		m_tool = ui.getCurrentTool();
 		m_container = new JPanel();
@@ -65,6 +66,7 @@ public class ToolOptionsPanel extends View {
 		default:
 			break;		
 		}
+		this.pack();
 		this.validate();
 		this.repaint();
 	}

@@ -139,7 +139,10 @@ public class MainView extends View {
 				break;
 			case FILL:
 				m_ui.toolCommand(UI.Cmd.FILL);
-				break;							
+				break;
+			case LOAD:
+				LoadDialog ld = new LoadDialog(m_ui);								
+				m_ui.command(m_action);
 			default:
 				m_ui.command(m_action);
 				break;			
@@ -160,7 +163,7 @@ public class MainView extends View {
 			this.setCustomTitle();
 			break;
 		case LOAD:
-			try{
+			try{				
 				m_ui.getImg().load();
 				iview.imgbuf=m_ui.getImg().data();
 			} catch (Exception e){
@@ -169,8 +172,12 @@ public class MainView extends View {
 				
 			}
 			break;
-		case SAVE:			
+		case SAVE:		
+			try {
 			m_ui.getImg().save(iview.imgbuf);
+			} catch (Exception e) {
+				SaveDialog sd = new SaveDialog(m_ui);				
+			}
 			break;
 		case NEW:
 			newImage();

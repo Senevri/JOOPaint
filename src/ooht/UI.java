@@ -24,10 +24,12 @@ public class UI {
 		tk = java.awt.Toolkit.getDefaultToolkit();
 		main = new MainView(this);				
 		currentTool = new Pen();
-		tools = new Toolbar(this);
-		
+		tools = new Toolbar(this);		
 		colpick = new ColorPicker(this);
+		colpick.setBounds(0, tools.getHeight(), colpick.getBounds().width, colpick.getBounds().height);
 		top = new ToolOptionsPanel(this);
+		top.setBounds(0, colpick.getY() + colpick.getHeight(), 200, top.getBounds().height);
+		
 		//main.pack();		
 	}
 	
