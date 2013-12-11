@@ -117,6 +117,8 @@ public class MainView extends View {
 			
 			input.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), Cmd.UNDO);
 			
+			input.put(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_DOWN_MASK), Cmd.ADD_LAYER);
+			
 			actions.put(Cmd.ZOOM_IN, new KeyAction(Cmd.ZOOM_IN));		
 			actions.put(Cmd.ZOOM_OUT, new KeyAction(Cmd.ZOOM_OUT));
 			actions.put(Cmd.LOAD, new KeyAction(Cmd.LOAD));
@@ -124,6 +126,7 @@ public class MainView extends View {
 			actions.put(Cmd.PEN, new KeyAction(Cmd.PEN));
 			actions.put(Cmd.FILL, new KeyAction(Cmd.FILL));
 			actions.put(Cmd.UNDO, new KeyAction(Cmd.UNDO));
+			actions.put(Cmd.ADD_LAYER, new KeyAction(Cmd.ADD_LAYER));
 		
 	}
 	class KeyAction extends AbstractAction {
@@ -177,7 +180,8 @@ public class MainView extends View {
 			break;
 		case SAVE:		
 			try {
-			m_ui.getImg().save(iview.imgbuf);
+			//m_ui.getImg().save(iview.imgbuf);
+				m_ui.getImg().save();
 			} catch (Exception e) {
 				SaveDialog sd = new SaveDialog(m_ui);				
 			}
@@ -187,6 +191,12 @@ public class MainView extends View {
 			break;
 		case UNDO:
 			iview.imgbuf = m_ui.getImg().Undo();
+			break;
+		case ADD_LAYER:
+			String layername = String.format("New Layer %d", m_ui.getImg().getLayerCount());
+			m_ui.getImg().addLayer(layername);			
+			
+			break;
 		default:
 			break;
 		}

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Stack;
@@ -26,7 +27,7 @@ import javax.imageio.ImageIO;
 public class Image extends Model {	
 	private BufferedImage img = null;
 	private int height = 240;
-	private int width = 320;
+	private int width = 320;	
 	
 	private String activeLayer = "Background";
 	private Map<String, ImageLayer> layers = null;
@@ -60,9 +61,9 @@ public class Image extends Model {
 	}
 	
 	public void Initialize() {
-		layers = new HashMap<String, ImageLayer>();
+		layers = new LinkedHashMap<String, ImageLayer>();
 		undostack = new ArrayDeque<ImageLayer>(100);
-	}
+	}	
 	
 	public void PushUndo(BufferedImage src){
 		ImageLayer il = new ImageLayer(src);
@@ -85,9 +86,28 @@ public class Image extends Model {
 		return this.img;		
 	}
 	
+	public void addLayer(String layername) {
+		ImageLayer layer = new ImageLayer(this.img.getWidth(), this.img.getHeight(), BufferedImage.TYPE_INT_ARGB );
+		layers.put(layername, layer);
+		this.img = layer;
+		this.activeLayer = layername;
+	}
+	
+	public int getLayerCount() {
+		return this.layers.values().size();		
+	}
+	
 	private void setImg(BufferedImage src){
 		this.img=src;		
 		layers.put("Background", new ImageLayer(this.img));		
+	}
+	
+	
+	
+	private void changeLayer(String layername) {
+		this.img = layers.get(layername); 
+		this.activeLayer = layername;
+		// TODO: error when looking with invalid layername?
 	}
 	
 	
@@ -118,8 +138,23 @@ public class Image extends Model {
 	 * @see ooht.Model#save()
 	 */	
 	public boolean save() {
-		// TODO Auto-generated method stub
-		return false;
+		// TODO merge all layers, save png.
+		ImageLayer combined = null;
+		for(ImageLayer il: layers.values()) {
+			 if (null == combined) {
+				 combined = il;
+			 } else {
+				 combined.Combine(il);				 
+			 }
+			
+		}
+		try {	    
+		    File outputfile = new File(this.filename);
+		    ImageIO.write(combined, "png", outputfile);
+		} catch (IOException e) {
+		    return false;
+		}
+		return true;
 	}
 	
 	public boolean save(BufferedImage img){
@@ -150,6 +185,15 @@ public class Image extends Model {
 
 	public void setName(String text) {
 		filename = text;		
+	}
+
+	public Map<String, ImageLayer> getLayers() {
+		// TODO Auto-generated method stub
+		return layers;
+	}
+
+	public void update(BufferedImage imgbuf) {
+		layers.get(activeLayer).setData(img.getData());		
 	}
 	
 }

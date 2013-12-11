@@ -56,7 +56,7 @@ public class ToolOptionsPanel extends View {
 		m_datalabels.clear();
 		switch (m_tool.type) {
 		case PEN: 
-			m_datalabels.put("size", new JLabel("1"));
+			m_datalabels.put("size", new JLabel(String.valueOf(m_tool.getSize())));
 			m_container.add(new JLabel("size"));
 			m_container.add(m_datalabels.get("size"));
 			m_container.add(new topScrollBar(1));

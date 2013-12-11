@@ -45,6 +45,10 @@ public class Pen extends Tool {
 		
 	}
 	
+	public float getSize() {
+		return m_strokesize;		
+	}
+	
 	
 	
 	public Color getColor(){

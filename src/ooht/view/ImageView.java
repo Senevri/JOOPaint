@@ -8,17 +8,21 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Point;
-
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import ooht.model.Image;
+import ooht.model.ImageLayer;
 import ooht.tool.*;
 import ooht.UI;
 
@@ -37,6 +41,7 @@ public class ImageView extends JPanel{
 		DrawingListener dl = new DrawingListener();
 		this.addMouseListener(dl);
 		this.addMouseMotionListener(dl);
+		this.addMouseWheelListener(dl);
 		this.setAutoscrolls(true);
 		
 		Image out = new Image(System.getProperty("user.dir"));
@@ -64,6 +69,19 @@ public class ImageView extends JPanel{
 	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
+		Map<String, ImageLayer> layers = m_image.getLayers();
+		for(String layername : layers.keySet()) {			
+			ImageLayer il = layers.get(layername);
+			if (il.show) {
+			g.drawImage(il, 
+					0,0,
+					(int)(il.getWidth()*zoomlevel), 
+					(int)(il.getHeight()*zoomlevel), 
+					0,0, 
+					il.getWidth(), il.getHeight(), this);
+			}
+		}
+		
 		g.drawImage(imgbuf, 
 				0, 0, 
 				(int)(imgbuf.getWidth()*zoomlevel), 
@@ -85,7 +103,7 @@ public class ImageView extends JPanel{
 		this.revalidate();	
 	}	
 	
-	private class DrawingListener implements MouseListener, MouseMotionListener{
+	private class DrawingListener implements MouseListener, MouseWheelListener, MouseMotionListener{
 
 		private Point lastPoint= null;
 		boolean apply = true;
@@ -140,7 +158,9 @@ public class ImageView extends JPanel{
 		@Override
 		public void mouseReleased(MouseEvent arg0) {			
 			
-			// TODO Auto-generated method stub
+			// TODO apply imgbuf to activelayer.
+			m_image.update(imgbuf);
+			
 			
 		}
 
@@ -170,6 +190,21 @@ public class ImageView extends JPanel{
 		@Override
 		public void mouseMoved(MouseEvent arg0) {
 			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent event) {
+			// TODO Auto-generated method stub
+			if (event.isControlDown()) {
+				int rot = event.getWheelRotation();
+				Tool t = m_ui.getCurrentTool();
+				float size = t.getSize() + rot;
+				if (size<=0) size=1f;
+				t.setSize(size);
+				m_ui.update();
+				
+			}
 			
 		}	
 	}

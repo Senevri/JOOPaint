@@ -18,7 +18,7 @@ import ooht.view.*;
 
 public class UI {
 	
-	public enum Cmd { ZOOM_IN, ZOOM_OUT, PEN, FILL, SAVE, LOAD, NEW, UNDO}
+	public enum Cmd { ZOOM_IN, ZOOM_OUT, PEN, FILL, SAVE, LOAD, NEW, UNDO, ADD_LAYER}
 	public Toolkit tk = null;
 	private Tool currentTool = null;
 	private Toolbar tools = null;
@@ -28,15 +28,6 @@ public class UI {
 	private ToolOptionsPanel top = null;
 	
 	public UI(){
-		tk = java.awt.Toolkit.getDefaultToolkit();
-		main = new MainView(this);				
-		currentTool = new Pen();
-		tools = new Toolbar(this);		
-		colpick = new ColorPicker(this);
-		colpick.setBounds(tools.getX(), tools.getHeight(), colpick.getBounds().width, colpick.getBounds().height);
-		top = new ToolOptionsPanel(this);
-		top.setBounds(colpick.getX(), colpick.getY() + colpick.getHeight(), 200, top.getBounds().height);
-		
 		//Set look and feel
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -53,6 +44,17 @@ public class UI {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+				
+		tk = java.awt.Toolkit.getDefaultToolkit();
+		main = new MainView(this);				
+		currentTool = new Pen();
+		tools = new Toolbar(this);		
+		colpick = new ColorPicker(this);
+		colpick.setBounds(tools.getX(), tools.getHeight(), colpick.getBounds().width, colpick.getBounds().height);
+		top = new ToolOptionsPanel(this);
+		top.setBounds(colpick.getX(), colpick.getY() + colpick.getHeight(), 200, top.getBounds().height);
+		
+		
 		
 		//main.pack();		
 	}
@@ -79,6 +81,7 @@ public class UI {
 			//throw new Exception("invalid toolcommand");
 			break;		
 		}
+		update();
 		
 	}
 	

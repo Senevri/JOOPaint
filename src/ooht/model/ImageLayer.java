@@ -22,6 +22,7 @@ public class ImageLayer extends BufferedImage {
 	
 	public BlendMode blending = BlendMode.NORMAL;
 	public double opacity = 1;
+	public boolean show = true;
 	
 	public ImageLayer Combine(ImageLayer top) {
 		ImageLayer out = new ImageLayer(this.getWidth(), this.getHeight(), this.TYPE_INT_ARGB);
@@ -62,7 +63,7 @@ public class ImageLayer extends BufferedImage {
 		super(arg0, arg1, arg2, arg3);
 		// TODO Auto-generated constructor stub
 	}
-	public ImageLayer(BufferedImage img) {		 
+	public ImageLayer(BufferedImage img) {			 
 		 super(img.getColorModel(), img.copyData(null), img.isAlphaPremultiplied(), null);		 
 	}
 	
