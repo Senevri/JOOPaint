@@ -13,6 +13,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Stack;
 
 import javax.imageio.ImageIO;
@@ -73,9 +74,14 @@ public class Image extends Model {
 	}
 	
 	public BufferedImage Undo() {
-		ImageLayer il = undostack.pop();
-		this.layers.put(il.Name, il);
-		this.img = il;
+		try {
+			ImageLayer il = undostack.pop();
+			this.layers.put(il.Name, il);
+			this.img = il;
+		} catch (NoSuchElementException ex) {
+			// that's cool, we just can't undo further...
+			
+		}
 		return this.img;		
 	}
 	

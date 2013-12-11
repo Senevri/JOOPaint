@@ -4,6 +4,13 @@ package ooht;
 import java.awt.Color;
 import java.awt.Toolkit;
 
+
+
+
+import javax.swing.UIManager;
+
+import javax.swing.UnsupportedLookAndFeelException;
+
 //import javax.swing.JFrame;
 import ooht.model.Image;
 import ooht.tool.*;
@@ -26,9 +33,26 @@ public class UI {
 		currentTool = new Pen();
 		tools = new Toolbar(this);		
 		colpick = new ColorPicker(this);
-		colpick.setBounds(0, tools.getHeight(), colpick.getBounds().width, colpick.getBounds().height);
+		colpick.setBounds(tools.getX(), tools.getHeight(), colpick.getBounds().width, colpick.getBounds().height);
 		top = new ToolOptionsPanel(this);
-		top.setBounds(0, colpick.getY() + colpick.getHeight(), 200, top.getBounds().height);
+		top.setBounds(colpick.getX(), colpick.getY() + colpick.getHeight(), 200, top.getBounds().height);
+		
+		//Set look and feel
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//main.pack();		
 	}
