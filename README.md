@@ -9,6 +9,7 @@ Currently, saves as flat PNG
 
  * CTRL-S saves, CTRL-O opens file
   * Currently only with drawing window selected.  
+ * CTRL-Z undo
  * P pen, F fill
  * CTRL+mouse wheel changes pen size  
  * Right click picks color 
